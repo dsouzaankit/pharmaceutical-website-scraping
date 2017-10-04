@@ -1,27 +1,5 @@
-parse href, extract, set form1's EVENTTARGET and EVENTARGUMENT attributes, finally submit form
+#for navigation: parse href, extract & set form's EVENTTARGET and EVENTARGUMENT attributes, & submit form
 
-while last element's href in $x('//*[contains(@class, "linkPagination")]') not null
-ignore 1st 2 rows of drug table, & select 2nd column
-$x('//table[contains(@class, "drugdescriptinTable")]//tr[3]/td[2]/a')		-- brand link
-$x('//table[contains(@class, "drugdescriptinTable")]//tr[4]/td[2]')		-- brand name
-$x('//textarea[contains(@id, "tbUses")]/text()')
-$x('//textarea[contains(@id, "tbClassOfDrugs")]/text()')
-$x('//p[contains(@id,"pMAnufacturer")]/text()')
-
-scrapy shell test:
-#scrapy shell 'http://www.medsplan.com/DrugsDescriptionByDisease/Diarrhea'
->>> a = scrapy.FormRequest.from_response(response, 
-formdata = {'__EVENTTARGET': 'ctl00$ContentPlaceHolder1$rptrDrugDetails$ctrl0$lnkDetails'}, 
-callback = None,
-dont_click = True)
->>> fetch(a)
-
-sudo su
-cd webScrape
-scrapy startproject pharma4
-cd pharma4
-vi pharma4/spiders/pharma4_spider.py
-...
 import re
 import scrapy
 from scrapy.selector import Selector
@@ -100,7 +78,3 @@ class QuotesSpider(scrapy.Spider):
             drug[i] = self.process_str(drug[i])
 
         yield drug
-
-...
-scrapy crawl pharma4
-scrapy crawl pharma4 --set FEED_URI=output.csv --set FEED_FORMAT=csv
