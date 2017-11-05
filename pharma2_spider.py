@@ -1,6 +1,5 @@
 import scrapy
-from scrapy.selector import Selector
-#from scrapy.http import HtmlResponse
+import re
 
 class Drug2(scrapy.Item):
     Illness = scrapy.Field()
@@ -12,7 +11,11 @@ class Drug2(scrapy.Item):
     Trade_name = scrapy.Field()
     Manufacturer = scrapy.Field()
 
-class QuotesSpider(scrapy.Spider):
+class Misc(scrapy.Item):
+    url = scrapy.Field()
+    captcha_code = scrapy.Field()
+
+class PharmaSpider(scrapy.Spider):
     name = "pharma2"
 
     def __init__(self, max_info = 10):
@@ -35,10 +38,10 @@ class QuotesSpider(scrapy.Spider):
 
     def start_requests(self):
         urls = [
-#            'http://www.medindia.net/drugs/medical-condition/index.asp?alpha=A',
+            'http://www.medindia.net/drugs/medical-condition/index.asp?alpha=A',
 #            'http://www.medindia.net/drugs/medical-condition/index.asp?alpha=B',
 #            'http://www.medindia.net/drugs/medical-condition/index.asp?alpha=C',
-            'http://www.medindia.net/drugs/medical-condition/index.asp?alpha=D',
+#            'http://www.medindia.net/drugs/medical-condition/index.asp?alpha=D',
 #            'http://www.medindia.net/drugs/medical-condition/index.asp?alpha=E',
 #            'http://www.medindia.net/doctors/drug_information/home.asp?alpha=F',
 #            'http://www.medindia.net/doctors/drug_information/home.asp?alpha=G',
@@ -67,20 +70,30 @@ class QuotesSpider(scrapy.Spider):
 
     def parse1(self, response):
 
-#get illness links alphabetically
+#get all condition name links alphabetically
         cond_nodes = response.xpath('//*[@class = "mi-list-group xs-block-grid-1 sm-block-grid-2"]/*[@class = "list-item"]/a')
         cond_names = response.xpath('//*[@class = "mi-list-group xs-block-grid-1 sm-block-grid-2"]/*[@class = "list-item"]/a/text()')
         for cond_node, cond_name in zip(cond_nodes, cond_names):
                 #if(self.counter < self.max_count):
-                if(cond_name.extract() == "Diabetes"):
+		#if(cond_name.extract() == "Diabetes"):
+		#if("Diabetes - Essentials" in cond_name.extract()):
+		#if("Diabetes - Foot Care" in cond_name.extract()):
+		#if("Diabetes - Gestational" in cond_name.extract()):
+		#if("Diabetes - Type 2" in cond_name.extract()):
+		#if("Diabetes and Hypertension" in cond_name.extract()):
+		#if("Diabetes Prevention" in cond_name.extract()):
+		#if("Diabetic Kidney Disease" in cond_name.extract()):
+		#if("Chemotherapy" in cond_name.extract()):
+		#if("Cancer" in cond_name.extract()):
+		if("Asthma" in cond_name.extract()):
                          illness = Drug2()
                          illness['Illness'] = cond_name.extract()
                          req = response.follow(cond_node, callback = self.parse2)
                          req.meta['item'] = illness
                          req.dont_filter = True
                          yield req
-                         break
-                self.counter += 1
+			 #break
+                #self.counter += 1
 
     def parse2(self, response):
 
@@ -107,7 +120,7 @@ class QuotesSpider(scrapy.Spider):
         drug = response.meta['item']
 
 #extract drug classification
-        classn = response.xpath('//*[contains(text(), "Therapeutic Classification  :")]/a/text()').extract()
+        classn = response.xpath('//*[contains(text(), "Therapeutic Classification :")]/a/text()').extract()
         if classn:
             classn = classn[0]
         drug['Classification'] = classn
@@ -156,7 +169,7 @@ class QuotesSpider(scrapy.Spider):
         if tr_name:
             tr_name = tr_name[0]
         drug['Trade_name'] = tr_name
-
+            
 #extract indian drug manufacturer name
         manuf = response.xpath('//td[contains(text(), "Manufacturer ")]/following-sibling::td/a/text()').extract()
         if manuf:
@@ -166,5 +179,5 @@ class QuotesSpider(scrapy.Spider):
         for i in drug:
 #clean records before yield
             drug[i] = self.process_str(drug[i])
-
         yield drug
+        
