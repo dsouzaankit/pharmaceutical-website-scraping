@@ -24,7 +24,7 @@ class QuotesSpider(scrapy.Spider):
 
     def start_requests(self):
 
-        self.start_url = 'http://www.medsplan.com/DrugsDescriptionByDisease/Diarrhea'
+        self.start_url = 'http://www.testsite.com/DrugsDescriptionByDisease/Diarrhea'
         yield scrapy.Request(url = self.start_url, callback = self.parse1)
 
 
