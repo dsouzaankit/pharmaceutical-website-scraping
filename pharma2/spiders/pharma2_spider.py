@@ -38,32 +38,9 @@ class PharmaSpider(scrapy.Spider):
 
     def start_requests(self):
         urls = [
-            'http://www.medindia.net/drugs/medical-condition/index.asp?alpha=A',
-#            'http://www.medindia.net/drugs/medical-condition/index.asp?alpha=B',
-#            'http://www.medindia.net/drugs/medical-condition/index.asp?alpha=C',
-#            'http://www.medindia.net/drugs/medical-condition/index.asp?alpha=D',
-#            'http://www.medindia.net/drugs/medical-condition/index.asp?alpha=E',
-#            'http://www.medindia.net/doctors/drug_information/home.asp?alpha=F',
-#            'http://www.medindia.net/doctors/drug_information/home.asp?alpha=G',
-#            'http://www.medindia.net/doctors/drug_information/home.asp?alpha=H',
-#            'http://www.medindia.net/doctors/drug_information/home.asp?alpha=I',
-#            'http://www.medindia.net/doctors/drug_information/home.asp?alpha=J',
-#            'http://www.medindia.net/doctors/drug_information/home.asp?alpha=K',
-#            'http://www.medindia.net/doctors/drug_information/home.asp?alpha=L',
-#            'http://www.medindia.net/doctors/drug_information/home.asp?alpha=M',
-#            'http://www.medindia.net/doctors/drug_information/home.asp?alpha=N',
-#            'http://www.medindia.net/doctors/drug_information/home.asp?alpha=O',
-#            'http://www.medindia.net/doctors/drug_information/home.asp?alpha=P',
-#            'http://www.medindia.net/doctors/drug_information/home.asp?alpha=Q',
-#            'http://www.medindia.net/doctors/drug_information/home.asp?alpha=R',
-#            'http://www.medindia.net/doctors/drug_information/home.asp?alpha=S',
-#            'http://www.medindia.net/doctors/drug_information/home.asp?alpha=T',
-#            'http://www.medindia.net/doctors/drug_information/home.asp?alpha=U',
-#            'http://www.medindia.net/doctors/drug_information/home.asp?alpha=V',
-#            'http://www.medindia.net/doctors/drug_information/home.asp?alpha=W',
-#            'http://www.medindia.net/doctors/drug_information/home.asp?alpha=X',
-#            'http://www.medindia.net/doctors/drug_information/home.asp?alpha=Y',
-#            'http://www.medindia.net/doctors/drug_information/home.asp?alpha=Z',
+            'http://www.testsite.net/drugs/medical-condition/index.asp?alpha=A',
+#            'http://www.testsite.net/drugs/medical-condition/index.asp?alpha=B',
+#            'http://www.testsite.net/doctors/drug_information/home.asp?alpha=Z',
         ]
         for url in urls:
             yield scrapy.Request(url=url, callback=self.parse1)
