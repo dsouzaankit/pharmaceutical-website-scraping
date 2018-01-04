@@ -1,5 +1,4 @@
 import scrapy
-import re
 
 class Drug2(scrapy.Item):
     Illness = scrapy.Field()
@@ -141,6 +140,8 @@ class PharmaSpider(scrapy.Spider):
 
         drug = response.meta['item']
 
+        #print(drug)
+
 #extract indian trade name
         tr_name = response.xpath('//td[contains(text(), "Trade Name ")]/following-sibling::td/b/text()').extract()
         if tr_name:
@@ -157,4 +158,3 @@ class PharmaSpider(scrapy.Spider):
 #clean records before yield
             drug[i] = self.process_str(drug[i])
         yield drug
-        
